@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products - MYGPS</title>
+  <link rel="icon" type="image/png" href="logo2.png"> 
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primary: #4A90E2; --secondary: #7ED321; --accent: #F5A623;
+      --dark: #2C3E50; --light: #F8F9FA; --white: #FFFFFF;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    .navbar {
+      background: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+    .nav-link { color: var(--dark) !important; font-weight: 500; }
+    .nav-link:hover { color: var(--secondary) !important; }
+
+    .logo-img { width: 100px; height: 40px; }
+
+    /* Mobile Cart Icon - Always Visible */
+    .mobile-cart-icon {
+      display: none;
+      position: relative;
+    }
+    
+    .mobile-cart-icon .cart-count {
+      top: -5px;
+      right: -8px;
+    }
+
+    /* Product Card */
+    .product-card {
+      border: none;
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      background: #fff;
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(74,144,226,0.2); }
+    .product-img { width: 100%; height: 250px; object-fit: cover; border-bottom: 2px solid var(--primary); }
+    .product-body { padding: 20px; }
+    .product-body h5 { font-weight: 600; }
+    .product-features { font-size: 14px; color: #7f8c8d; margin: 10px 0; }
+    .product-features li { list-style: none; margin-bottom: 4px; }
+    .product-features li i { color: var(--secondary); margin-right: 6px; }
+
+    .add-cart-btn {
+      background: var(--primary);
+      border: none;
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: 0.3s;
+    }
+    .add-cart-btn:hover { background: var(--secondary); }
+
+    /* NEW: Price + Button Row */
+    .price-btn-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+    }
+    .product-price {
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+
+    /* Cart badge */
+    .cart-icon { position: relative; }
+    .cart-count {
+      position: absolute;
+      top: 0px;
+      right: -5px;
+      background: red;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 10px;
+      min-width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    /* Cart Sidebar */
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 350px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+      transition: right 0.4s ease;
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .cart-sidebar.active { right: 0; }
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .cart-item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+    .cart-item h6 { margin: 0; font-size: 15px; }
+    .cart-item p { margin: 0; font-size: 14px; color: gray; }
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+    }
+    .quantity-controls button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .quantity-controls span {
+      margin: 0 8px;
+      font-weight: 500;
+    }
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: red;
+      font-size: 14px;
+      margin-left: auto;
+    }
+    .cart-footer {
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      margin-top: 10px;
+    }
+    .cart-footer button {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+
+    /* Footer */                                                                                                                                                                                     
+    footer { background: var(--dark); color: #ddd; padding: 60px 0 20px; }
+    footer a { color: #bbb; text-decoration: none; transition: color 0.3s ease; }
+    footer a:hover { color: var(--primary); }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .logo-img { 
+        width: 80px; 
+        height: 32px;
+      }
+
+      /* Hide cart icon inside navbar on mobile */
+      .navbar .nav-item .cart-icon {
+        display: none;
+      }
+
+      /* Mobile navbar layout */
+      .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .navbar-brand {
+        flex: 0 0 auto;
+      }
+
+      /* Right side group: hamburger + cart */
+      .navbar-toggler {
+        order: 2;
+        margin-left: auto;
+        margin-right: 10px;
+      }
+
+      .mobile-cart-icon {
+        display: block;
+        order: 3;
+        margin-left: 0;
+      }
+
+      /* Collapsed menu positioning */
+      .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--white);
+        box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        z-index: 1000;
+      }
+
+      .navbar-collapse.collapse:not(.show) {
+        display: none;
+      }
+
+      .navbar-collapse.collapsing,
+      .navbar-collapse.show {
+        display: block;
+      }
+
+      .navbar-nav {
+        padding: 10px 0;
+      }
+
+      .cart-sidebar {
+        width: 100%;
+        right: -100%;
+      }
+      .cart-sidebar.active { right: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="MYGPS - 01.png" class="logo-img" alt="My GPS Logo">
+      </a>
+
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Mobile Cart Icon (Right side of Hamburger) -->
+      <a class="mobile-cart-icon cart-icon" href="#" onclick="toggleCart()">
+        <i class="fas fa-shopping-cart fa-lg" style="color: var(--dark);"></i>
+        <span class="cart-count" id="cart-count-mobile">0</span>
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Features.html">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link" href="App.html">App</a></li>
+          <li class="nav-item"><a class="nav-link active" href="Products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="About.html">About Us</a></li>
+          <li class="nav-item">
+            <a class="nav-link cart-icon" href="#" onclick="toggleCart()">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count" id="cart-count">0</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Products -->
+  <section class="py-5 mt-5">
+    <div class="container">
+      <h2 class="text-center mb-5">Our Award Winning Products</h2>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="product-card">
+            <img src="Product_1.png" class="product-img" alt="SmartPet Lite">
+            <div class="product-body">
+              <h5>SmartPet Lite</h5>
+              <p class="text-muted mb-2">Affordable collar tag with basic location and alert features.</p>
+              <ul class="product-features">
+                <li><i class="fas fa-map-marker-alt"></i> Live GPS Tracking</li>
+                <li><i class="fas fa-battery-full"></i> 2 Days Battery Life</li>
+                <li><i class="fas fa-bell"></i> Instant Alerts</li>
+              </ul>
+              <div class="price-btn-row">
+                <span class="product-price">₹2,499</span>
+                <button class="add-cart-btn" onclick="addToCart('SmartPet Lite', 2499, 'Product_1.png')">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="product-card">
+            <img src="Product_2.png" class="product-img" alt="SmartPet Pro">
+            <div class="product-body">
+              <h5>SmartPet Pro</h5>
+              <p class="text-muted mb-2">Premium tag with health monitoring and family sharing.</p>
+              <ul class="product-features">
+                <li><i class="fas fa-heartbeat"></i> Health Tracking</li>
+                <li><i class="fas fa-share-alt"></i> Family Access</li>
+                <li><i class="fas fa-shield-alt"></i> Anti-Theft Mode</li>
+              </ul>
+              <div class="price-btn-row">
+                <span class="product-price">₹3,999</span>
+                <button class="add-cart-btn" onclick="addToCart('SmartPet Pro', 3999, 'Product_2.png')">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="product-card">
+            <img src="Product_3.png" class="product-img" alt="SmartPet Pro Max">
+            <div class="product-body">
+              <h5>SmartPet Pro Max</h5>
+              <p class="text-muted mb-2">Premium tag with health monitoring and family sharing.</p>
+              <ul class="product-features">
+                <li><i class="fas fa-heartbeat"></i> Health Tracking</li>
+                <li><i class="fas fa-share-alt"></i> Family Access</li>
+                <li><i class="fas fa-shield-alt"></i> Anti-Theft Mode</li>
+              </ul>
+              <div class="price-btn-row">
+                <span class="product-price">₹5,900</span>
+                <button class="add-cart-btn" onclick="addToCart('SmartPet Pro Max', 5900, 'Product_3.png')">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="product-card">
+            <img src="Product_4.png" class="product-img" alt="SmartPet Plus">
+            <div class="product-body">
+              <h5>SmartPet Plus</h5>
+              <p class="text-muted mb-2">Premium tag with health monitoring and family sharing.</p>
+              <ul class="product-features">
+                <li><i class="fas fa-heartbeat"></i> Health Tracking</li>
+                <li><i class="fas fa-share-alt"></i> Family Access</li>
+                <li><i class="fas fa-shield-alt"></i> Anti-Theft Mode</li>
+              </ul>
+              <div class="price-btn-row">
+                <span class="product-price">₹4,999</span>
+                <button class="add-cart-btn" onclick="addToCart('SmartPet Plus', 4999, 'Product_4.png')">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="product-card">
+            <img src="Product_5.jpg" class="product-img" alt="SmartPet Mini">
+            <div class="product-body">
+              <h5>SmartPet Mini</h5>
+              <p class="text-muted mb-2">Premium tag with health monitoring and family sharing.</p>
+              <ul class="product-features">
+                <li><i class="fas fa-heartbeat"></i> Health Tracking</li>
+                <li><i class="fas fa-share-alt"></i> Family Access</li>
+                <li><i class="fas fa-shield-alt"></i> Anti-Theft Mode</li>
+              </ul>
+              <div class="price-btn-row">
+                <span class="product-price">₹3,999</span>
+                <button class="add-cart-btn" onclick="addToCart('SmartPet Mini', 3999, 'Product_5.jpg')">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="product-card">
+            <img src="Product_6.jpeg" class="product-img" alt="SmartPet Super">
+            <div class="product-body">
+              <h5>SmartPet Super</h5>
+              <p class="text-muted mb-2">Premium tag with health monitoring and family sharing.</p>
+              <ul class="product-features">
+                <li><i class="fas fa-heartbeat"></i> Health Tracking</li>
+                <li><i class="fas fa-share-alt"></i> Family Access</li>
+                <li><i class="fas fa-shield-alt"></i> Anti-Theft Mode</li>
+              </ul>
+              <div class="price-btn-row">
+                <span class="product-price">₹7,999</span>
+                <button class="add-cart-btn" onclick="addToCart('SmartPet Super', 7999, 'Product_6.jpeg')">Add to Cart</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h5>Your Cart</h5>
+      <button class="btn btn-sm btn-danger" onclick="toggleCart()">X</button>
+    </div>
+    <div id="cart-items"></div>
+    <div class="cart-footer">
+      <h6>Total: ₹<span id="cart-total">0</span></h6>
+      <button class="btn btn-primary">View Cart</button>
+      <button class="btn btn-success">Checkout</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <img src="MYGPS - 02.png" class="logo-img" alt="My GPS Logo">
+          <p>Empowering you with smart, reliable tracking for a safer tomorrow.</p>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/expresstqr/?hl=en" target="_blank"><i class="fab fa-facebook fa-lg mx-2"></i></a>
+            <a href="https://www.instagram.com/mygpslive/" target="_blank"><i class="fab fa-youtube fa-lg mx-2"></i></a>
+            <a href="https://www.instagram.com/mygpslive_?igsh=ZmU2ejVydTF4ZWR6&utm_source=qr%2F%3Fhl%3Den" target="_blank"><i class="fab fa-instagram fa-lg mx-2"></i></a>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Products.html">Pet Trackers</a></li>
+            <li><a href="Products.html">Vehicle Trackers</a></li>
+            <li><a href="Products.html">Mahakhanij</a></li>
+            <li><a href="Products.html">AIS140</a></li>
+            <li><a href="about.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Contact Us</h5> 
+          <p><i class="fas fa-envelope me-2"></i>mygpssolution@gmail.com<br><i class="fas fa-phone me-2"></i>+91 7399991199<br><i class="fas fa-location me-2"></i>M3 GPS SOLUTION PVT LTD<br><i class="fas fa-map me-2"></i>Pasha Manzil Roshan Gate, Aurangabad</i></p>
+          <p>Monday – Saturday : 10AM – 8PM EST</p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p>© 2025 MYGPS Inc. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function toggleCart() {
+      document.getElementById("cart-sidebar").classList.toggle("active");
+    }
+
+    function addToCart(name, price, img) {
+      const item = cart.find(p => p.name === name);
+      if (item) {
+        item.qty++;
+      } else {
+        cart.push({ name, price, img, qty: 1 });
+      }
+      updateCart();
+      document.getElementById("cart-sidebar").classList.add("active");
+    }
+
+    function updateCart() {
+      const cartItemsDiv = document.getElementById("cart-items");
+      const cartCount = document.getElementById("cart-count");
+      const cartCountMobile = document.getElementById("cart-count-mobile");
+      const cartTotal = document.getElementById("cart-total");
+
+      cartItemsDiv.innerHTML = "";
+      let total = 0;
+      let count = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        count += item.qty;
+
+        cartItemsDiv.innerHTML += `
+          <div class="cart-item">
+            <img src="${item.img}" alt="${item.name}">
+            <div>
+              <h6>${item.name}</h6>
+              <p>₹${item.price}</p>
+              <div class="quantity-controls">
+                <button onclick="changeQty(${index}, -1)">-</button>
+                <span>${item.qty}</span>
+                <button onclick="changeQty(${index}, 1)">+</button>
+              </div>
+            </div>
+            <button class="remove-btn" onclick="removeItem(${index})"><i class="fas fa-trash"></i></button>
+          </div>`;
+      });
+
+      cartCount.textContent = count;
+      cartCountMobile.textContent = count;
+      cartTotal.textContent = total;
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) cart.splice(index, 1);
+      updateCart();
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCart);
+  </script>
+
+</body>
+</html>

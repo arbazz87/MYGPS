@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>App - MYGPS</title>
+  <link rel="icon" type="image/png" href="logo2.png"> 
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet"/>
+
+  <style>
+    :root {
+      --primary: #4A90E2; --secondary: #7ED321; --accent: #F5A623;
+      --light-teal: #50E3C2; --dark: #2C3E50; --light: #F8F9FA;
+      --white: #FFFFFF; --text-dark: #2C3E50; --text-light: #7F8C8D;
+      --logo-gradient: linear-gradient(135deg, #4A90E2, #7ED321, #F5A623, #50E3C2);
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: var(--light);
+      color: var(--text-dark);
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    .navbar {
+      background: var(--white);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      padding: 1rem 0;
+    }
+    .nav-link { color: var(--text-dark) !important; font-weight: 500; }
+    .nav-link:hover { color: var(--secondary) !important; }
+
+    .logo-img { width: 100px; height: 40px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1)); }
+
+    /* Hero Section */
+    .app-hero {
+      background: var(--logo-gradient);
+      color: var(--white);
+      padding: 150px 0 100px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .app-hero h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 3px 8px rgba(0,0,0,0.3);
+    }
+    .app-hero p {
+      font-size: 1.3rem;
+      max-width: 800px;
+      margin: 0 auto 2.5rem;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    /* App Download Buttons */
+    .app-download-btn {
+      padding: 15px 40px;
+      border-radius: 50px;
+      font-weight: 600;
+      margin: 10px;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      font-size: 1.1rem;
+    }
+    .app-download-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    }
+
+    /* App Screenshots Section */
+    .app-screenshots {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .screenshot-card {
+      background: var(--light);
+      border-radius: 20px;
+      padding: 30px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+    .screenshot-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(74, 144, 226, 0.15);
+    }
+    .screenshot-img {
+      width: 100%;
+      max-width: 280px;
+      height: 500px;
+      object-fit: cover;
+      border-radius: 30px;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    }
+
+    /* App Features */
+    .app-features {
+      padding: 100px 0;
+      background: var(--light);
+    }
+    .app-feature-card {
+      background: var(--white);
+      border-radius: 15px;
+      padding: 40px 30px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+    .app-feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    .app-feature-icon {
+      width: 80px;
+      height: 80px;
+      background: var(--logo-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2rem;
+      color: var(--white);
+    }
+
+    /* How It Works */
+    .how-it-works {
+      padding: 100px 0;
+      background: var(--white);
+    }
+    .step-card {
+      text-align: center;
+      padding: 30px;
+      position: relative;
+    }
+    .step-number {
+      width: 80px;
+      height: 80px;
+      background: var(--logo-gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--white);
+      box-shadow: 0 5px 20px rgba(74, 144, 226, 0.3);
+    }
+
+    /* App Stats */
+    .app-stats {
+      padding: 100px 0;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: var(--white);
+    }
+    .stat-card {
+      text-align: center;
+      padding: 30px;
+    }
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+    .stat-label {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+
+    /* Testimonials */
+    .app-testimonials {
+      padding: 100px 0;
+      background: var(--light);
+    }
+    .testimonial-card {
+      background: var(--white);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin: 20px 0;
+      height: 100%;
+    }
+    .stars {
+      color: var(--accent);
+      margin-bottom: 15px;
+    }
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-top: 20px;
+    }
+    .author-img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--logo-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--white);
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 100px 0;
+      background: white;
+      color: black;
+      text-align: center;
+    }
+
+    /* Cart badge */
+    .cart-icon { position: relative; }
+    .cart-count {
+      position: absolute;
+      top: 0;
+      right: -5px;
+      background: red;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 12px;
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Cart Sidebar */
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 350px;
+      height: 100%;
+      background: #fff;
+      box-shadow: -5px 0 15px rgba(0,0,0,0.2);
+      transition: right 0.4s ease;
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 20px;
+    }
+    .cart-sidebar.active { right: 0; }
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
+    .cart-item {
+      border-bottom: 1px solid #eee;
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+    .cart-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+    .cart-item h6 { margin: 0; font-size: 15px; }
+    .cart-item p { margin: 0; font-size: 14px; color: gray; }
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      margin-top: 5px;
+    }
+    .quantity-controls button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .quantity-controls span {
+      margin: 0 8px;
+      font-weight: 500;
+    }
+    .remove-btn {
+      background: transparent;
+      border: none;
+      color: red;
+      font-size: 14px;
+      margin-left: auto;
+    }
+    .cart-footer {
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+      margin-top: 10px;
+    }
+    .cart-footer button {
+      width: 100%;
+      margin-top: 10px;
+      border-radius: 8px;
+    }
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      .hero p { font-size: 1.1rem; }
+      .hero { padding: 140px 0 80px; }
+      .logo-img { 
+        width: 80px; 
+        height: 32px;
+      }
+    }
+
+    /* Footer */
+    footer { background: var(--dark); color: #ddd; padding: 60px 0 20px; }
+    footer a { color: #bbb; text-decoration: none; transition: color 0.3s ease; }
+    footer a:hover { color: var(--primary); }
+
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">
+        <img src="MYGPS - 01.png" class="logo-img" alt="My GPS Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="Features.html">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="service.html">Services</a></li>
+          <li class="nav-item"><a class="nav-link active" href="App.html">App</a></li>
+          <li class="nav-item"><a class="nav-link" href="Products.html">Products</a></li>
+          <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+          <li class="nav-item">
+            <a class="nav-link cart-icon" href="#" onclick="toggleCart()">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="cart-count" id="cart-count">0</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="container">
+      <h2 class="mb-4">Ready to Get Started?</h2>
+      <p class="lead mb-5">Join thousands of satisfied users who trust MYGPS for their tracking needs. Download now and experience the difference!</p>
+      <div class="d-flex justify-content-center flex-wrap">
+        <a href="https://apps.apple.com/in/app/my-gps-live/id6504559401" target="_blank" class="btn btn-light app-download-btn">
+          <i class="fab fa-apple fa-lg"></i> App Store
+        </a>
+        <a href="https://play.google.com/store/apps/details?id=com.track.mygpslive&pcampaignid=web_share" target="_blank" class="btn btn-dark app-download-btn">
+          <i class="fab fa-google-play fa-lg"></i> Play Store
+        </a>
+      </div>
+      <p class="mt-4">Available for iPhone, iPad & Android devices</p>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="how-it-works">
+    <div class="container">
+      <h2 class="text-center mb-5">How It Works - Simple as 1-2-3</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="step-card">
+            <div class="step-number">1</div>
+            <h4>Download & Install</h4>
+            <p>Download MYGPS app from App Store or Play Store. Create your free account in seconds with just your email.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="step-card">
+            <div class="step-number">2</div>
+            <h4>Connect Your Device</h4>
+            <p>Pair your GPS tracker with the app using the simple QR code scan or device ID. Activation takes less than a minute.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="step-card">
+            <div class="step-number">3</div>
+            <h4>Start Tracking</h4>
+            <p>You're all set! Monitor locations in real-time, set up alerts, create geofences, and enjoy peace of mind.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- App Screenshots -->
+  <section class="app-screenshots">
+    <div class="container">
+      <h2 class="text-center mb-5">Experience the Interface</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="screenshot-card">
+            <div class="screenshot-img" style="background: transparent; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+              <i><img src="Mobile_1.PNG" alt="Map" class="screenshot-img"></i>
+            </div>
+            <h5>Live Map View</h5>
+            <p>Track all your devices on an interactive map with real-time updates and smooth animations.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="screenshot-card">
+            <div class="screenshot-img" style="background: transparent; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+              <i><img src="Mobile_2.PNG" alt="Dashboard" class="screenshot-img"></i>
+            </div>
+            <h5>Dashboard Analytics</h5>
+            <p>View comprehensive statistics, reports, and insights about your tracked devices at a glance.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="screenshot-card">
+            <div class="screenshot-img" style="background: transparent; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+              <i><img src="Mobile_3.PNG" alt="Smart Alerts" class="screenshot-img"></i>
+            </div>
+            <h5>Smart Tools</h5>
+            <p>Configure custom alerts and notifications to stay informed about important events instantly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="app-testimonials">
+    <div class="container">
+      <h2 class="text-center mb-5">What Users Are Saying</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p>"The app is incredibly user-friendly! I can track my car and get instant alerts if it moves. The interface is clean and responsive. Highly recommended!"</p>
+            <div class="testimonial-author">
+              <div class="author-img">RK</div>
+              <div>
+                 <strong>Rahul Kumar</strong>
+                <div class="text-muted" style="font-size: 0.9rem;">Car Owner, Delhi</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p>"Love the pet tracking feature! I can see where my dog is at all times. The SOS button gives me peace of mind when he's out with the dog walker."</p>
+            <div class="testimonial-author">
+              <div class="author-img">PS</div>
+              <div>
+                <strong>Priya Sharma</strong>
+                <div class="text-muted" style="font-size: 0.9rem;">Pet Owner, Mumbai</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="testimonial-card">
+            <div class="stars">
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+              <i class="fas fa-star"></i>
+            </div>
+            <p>"Managing my entire fleet from one app is a game-changer. The reports help me optimize routes and reduce fuel costs significantly. Best investment ever!"</p>
+            <div class="testimonial-author">
+              <div class="author-img">AM</div>
+              <div>
+                <strong>Amit Mehta</strong>
+                <div class="text-muted" style="font-size: 0.9rem;">Fleet Manager, Bangalore</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cart Sidebar -->
+  <div class="cart-sidebar" id="cart-sidebar">
+    <div class="cart-header">
+      <h5>Your Cart</h5>
+      <button class="btn btn-sm btn-danger" onclick="toggleCart()">X</button>
+    </div>
+    <div id="cart-items"></div>
+    <div class="cart-footer">
+      <h6>Total: ₹<span id="cart-total">0</span></h6>
+      <button class="btn btn-primary">View Cart</button>
+      <button class="btn btn-success">Checkout</button>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4 mb-4">
+          <img src="MYGPS - 02.png" class="logo-img" alt="My GPS Logo">
+          <p>Empowering you with smart, reliable tracking for a safer tomorrow.</p>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/expresstqr/?hl=en" target="_blank"><i class="fab fa-facebook fa-lg mx-2"></i></a>
+            <a href="https://www.instagram.com/mygpslive/" target="_blank"><i class="fab fa-youtube fa-lg mx-2"></i></a>
+            <a href="https://www.instagram.com/mygpslive_?igsh=ZmU2ejVydTF4ZWR6&utm_source=qr%2F%3Fhl%3Den" target="_blank"><i class="fab fa-instagram fa-lg mx-2"></i></a>
+          </div>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="Products.html">Pet Trackers</a></li>
+            <li><a href="Products.html">Vehicle Trackers</a></li>
+            <li><a href="Products.html">Mahakhanij</a></li>
+            <li><a href="Products.html">AIS140</a></li>
+            <li><a href="about.html">Support</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 mb-4">
+          <h5>Contact Us</h5> 
+          <p><i class="fas fa-envelope me-2"></i>mygpssolution@gmail.com<br><i class="fas fa-phone me-2"></i>+91 7399991199<br><i class="fas fa-location me-2"></i>M3 GPS SOLUTION PVT LTD<br><i class="fas fa-map me-2"></i>Pasha Manzil Roshan Gate, Aurangabad</i></p>
+          <p>Monday – Saturday : 10AM – 8PM EST</p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <div class="text-center">
+        <p>© 2025 MYGPS Inc. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function toggleCart() {
+      document.getElementById("cart-sidebar").classList.toggle("active");
+    }
+
+    function updateCart() {
+      const cartItemsDiv = document.getElementById("cart-items");
+      const cartCount = document.getElementById("cart-count");
+      const cartTotal = document.getElementById("cart-total");
+
+      cartItemsDiv.innerHTML = "";
+      let total = 0;
+      let count = 0;
+
+      cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        count += item.qty;
+
+        cartItemsDiv.innerHTML += `
+          <div class="cart-item">
+            <img src="${item.img}" alt="${item.name}">
+            <div>
+              <h6>${item.name}</h6>
+              <p>₹${item.price}</p>
+              <div class="quantity-controls">
+                <button onclick="changeQty(${index}, -1)">-</button>
+                <span>${item.qty}</span>
+                <button onclick="changeQty(${index}, 1)">+</button>
+              </div>
+            </div>
+            <button class="remove-btn" onclick="removeItem(${index})"><i class="fas fa-trash"></i></button>
+          </div>`;
+      });
+
+      cartCount.textContent = count;
+      cartTotal.textContent = total;
+      localStorage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function changeQty(index, delta) {
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) cart.splice(index, 1);
+      updateCart();
+    } 
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+
+    document.addEventListener("DOMContentLoaded", updateCart);
+  </script>
+</body>
+</html>
