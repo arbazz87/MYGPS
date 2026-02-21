@@ -283,15 +283,17 @@
     .team-img {
       width: 150px;
       height: 150px;
-      border-radius: 50%;
-      background: var(--logo-gradient);
-      display: flex;
-      align-items: center;
-      justify-content: center;
       margin: 0 auto 20px;
-      font-size: 3rem;
-      color: var(--white);
-      font-weight: 600;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--logo-gradient);
+    }
+
+    .team-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
     }
 
     /* Stats Section */
@@ -308,6 +310,7 @@
       font-size: 3rem;
       font-weight: 800;
       margin-bottom: 10px;
+      transition: opacity 0.3s ease;
     }
     .stat-label {
       font-size: 1.1rem;
@@ -582,7 +585,7 @@
       <div class="row g-4">
         <div class="col-md-4">
           <div class="team-card">
-            <div class="team-img">SF</div>
+            <div class="team-img"><img src="Faheem.jpeg" alt="Faheem Shaikh"></div>
             <h4>Shaikh Faheem</h4>
             <p class="text-muted">Founder & CEO</p>
             <p>With over 15 years of experience in GPS technology and IoT solutions, Faheem leads our vision and strategic direction.</p>
@@ -591,22 +594,50 @@
 
         <div class="col-md-4">
           <div class="team-card">
-            <div class="team-img">SK</div>
+            <div class="team-img"><img src="Raafe.jpeg" alt="Raafe Shaikh"></div>
             <h4>Shaikh Kaif</h4>
-            <p class="text-muted">Manager</p>
+            <p class="text-muted">Director</p>
             <p>Kaif drives our technology innovation and product development, ensuring we stay at the forefront of GPS tracking solutions.</p>
           </div>
         </div>
 
         <div class="col-md-4">
           <div class="team-card">
-            <div class="team-img">SB</div>
+            <div class="team-img"><img src="Bilal.png" alt="Bilal Shaikh"></div>
             <h4>Shaikh Bilal</h4>
-            <p class="text-muted">Customer Support</p>
+            <p class="text-muted">Director</p>
             <p>Bilal ensures every customer receives exceptional support and has a seamless experience with our products and services.</p>
           </div>
         </div>
       </div>
+    </div>
+  </section>
+
+    <section class="our-team">
+    <div class="container">
+      <h2 class="text-center mb-5">Meet Our Developers</h2>
+      <div class="row g-4">
+        <div class="col-md-4">   
+          <div class="team-card">
+            <div class="team-img"><img src="zaid.jpeg" alt="Zaid Shaikh"></div>
+            <h4>Zaid Shaikh</h4>
+            <p class="text-muted">App Developer</p>
+            <p>Zaid develops scalable and user-friendly mobile applications, focusing on performance, security, and seamless user experience across Android and iOS platforms.</p>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <div class="team-card">
+            <div class="team-img">
+              <div class="team-img"><img src="arbaz.jpeg" alt="Arbaz Khan"></div>
+            </div>
+            <h4>Arbaz Khan</h4>
+            <p class="text-muted">Web Developer</p>
+            <p>Arbaz develops responsive and high-performance websites with a focus on clean design and secure functionality.</p>
+          </div>
+        </div>
+
+        </div>
     </div>
   </section>
  
@@ -616,25 +647,25 @@
       <div class="row">
         <div class="col-md-3 col-6">
           <div class="stat-box">
-            <div class="stat-number">50K+</div>
+            <div class="stat-number" data-target="50" data-suffix="K+">50K+</div>
             <div class="stat-label">Happy Customers</div>
           </div>
         </div>
         <div class="col-md-3 col-6">
           <div class="stat-box">
-            <div class="stat-number">100K+</div>
+            <div class="stat-number" data-target="100" data-suffix="K+">100K+</div>
             <div class="stat-label">Devices Sold</div>
           </div>
         </div>
         <div class="col-md-3 col-6">
           <div class="stat-box">
-            <div class="stat-number">99.9%</div>
+            <div class="stat-number" data-target="99.9" data-suffix="%" data-decimal="1">99.9%</div>
             <div class="stat-label">Uptime Guaranteed</div>
           </div>
         </div>
         <div class="col-md-3 col-6">
           <div class="stat-box">
-            <div class="stat-number">24/7</div>
+            <div class="stat-number" data-target="24" data-suffix="/7">24/7</div>
             <div class="stat-label">Customer Support</div>
           </div>
         </div>
@@ -817,7 +848,60 @@
       this.reset();
     });
 
-    document.addEventListener("DOMContentLoaded", updateCart);
+    // =============================================
+    // SCROLL COUNTER ANIMATION
+    // =============================================
+    function animateCounter(el) {
+      const target = parseFloat(el.getAttribute('data-target'));
+      const suffix = el.getAttribute('data-suffix') || '';
+      const decimals = parseInt(el.getAttribute('data-decimal')) || 0;
+      const duration = 2000;
+      const start = performance.now();
+
+      function update(time) {
+        const elapsed = time - start;
+        const progress = Math.min(elapsed / duration, 1);
+        // Ease out cubic - starts fast, slows at end
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = eased * target;
+        el.textContent = current.toFixed(decimals) + suffix;
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = target.toFixed(decimals) + suffix;
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    function initCounters() {
+      const statsSection = document.querySelector('.stats-section');
+      if (!statsSection) return;
+
+      const observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            const counters = document.querySelectorAll('.stat-number[data-target]');
+            counters.forEach(function(el) {
+              if (!el.dataset.animated) {
+                el.dataset.animated = 'true';
+                animateCounter(el);
+              }
+            });
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.3 });
+
+      observer.observe(statsSection);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      updateCart();
+      initCounters();
+    });
   </script>
 </body>
 </html>
